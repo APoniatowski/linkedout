@@ -1,0 +1,35 @@
+{{define "layout"}}
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{{template "title"}}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="/js/linkedout.js"></script>
+</head>
+
+<div class="topnav" id="navBar">
+    <a class="active" href="/">Home</a>
+    <a href="/experience/">Experience</a>
+    <a href="/certifications/">Certifications</a>
+    <a href="/skills/">Skills</a>
+    <a href="/recommendations/">Recommendations</a>
+    <a href="/accomplishments/">Accomplishments</a>
+    <a href="/faq/">FAQ</a>
+    <a href="/contact/">Contact me</a>
+    <a href="javascript:void(0);" class="icon" onclick="menuButtonFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<body>
+    <div class="content">
+    {{template "body"}}
+    </div>
+</body>
+
+<footer>Made with Go</footer>
+</html>
+{{end}}

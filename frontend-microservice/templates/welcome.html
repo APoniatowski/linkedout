@@ -1,10 +1,5 @@
-<h1>{{.PageTitle}}</h1>
-<ul>
-    {{range .LOData}}
-        {{if .SubTitle}}
-            <li class="done">{{.Title}}</li>
-        {{else}}
-            <li>{{.Title}}</li>
-        {{end}}
-    {{end}}
-</ul>
+{{define "title"}}Welcome{{end}}
+
+{{define "body"}}
+<h1>A short story about myself, etc etc. Pretty much whatever you want as your welcome message.</h1>
+{{end}}
