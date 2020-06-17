@@ -13,8 +13,8 @@ function menuButtonFunction() {
 }
 
 function stickyNavBar() {
-var navbar = document.getElementById("navBar");
-var sticky = navbar.offsetTop;
+    var navbar = document.getElementById("navBar");
+    var sticky = navbar.offsetTop;
     if (window.pageYOffset >= sticky) {
         navbar.classList.add("sticky")
     } else {

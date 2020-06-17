@@ -8,5 +8,6 @@ func envPort() string {
 	if len(port) == 0 {
 		port = "80"
 	}
+
 	return ":" + port
 }

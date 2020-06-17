@@ -237,7 +237,6 @@ func contactPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
 	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "contact.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)

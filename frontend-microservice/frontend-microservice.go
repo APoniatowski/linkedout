@@ -13,7 +13,7 @@ func main() {
 	http.Handle("/css/", http.StripPrefix("/css/", cssStatic))
 	http.Handle("/js/", http.StripPrefix("/js/", jsStatic))
 
-	// Page serving
+	// Page serving section
 	http.HandleFunc("/", welcomePage)
 	http.HandleFunc("/experience/", experiencePage)
 	http.HandleFunc("/certifications/", certificationPage)
