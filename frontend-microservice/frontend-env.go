@@ -1,8 +1,14 @@
 package main
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
-// Port environment variable for the frontend. This can be set to something else in the container's ENV, as PORT. Default is 80 (HTTP)
+/*
+	get the environment var for the port you'd prefer to use via ENV in k8s/dockerfile,
+	or alternatively it will default to 8081, if no port was specified
+*/
 func envPort() string {
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
@@ -10,4 +16,15 @@ func envPort() string {
 	}
 
 	return ":" + port
+}
+
+func envHostname() string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		log.Println(err.Error())
+	} else {
+		return hostname
+	}
+
+	return os.Getenv("HOSTNAME")
 }

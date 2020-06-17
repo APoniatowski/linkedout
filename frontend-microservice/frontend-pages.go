@@ -11,9 +11,7 @@ import (
 // Pages that will be served
 func welcomePage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "welcome.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -43,9 +41,7 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 
 func experiencePage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "experience.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -75,9 +71,7 @@ func experiencePage(w http.ResponseWriter, r *http.Request) {
 
 func certificationPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "certifications.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -107,9 +101,7 @@ func certificationPage(w http.ResponseWriter, r *http.Request) {
 
 func skillsPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "skills.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -139,9 +131,7 @@ func skillsPage(w http.ResponseWriter, r *http.Request) {
 
 func recommendationsPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "recommendations.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -171,9 +161,7 @@ func recommendationsPage(w http.ResponseWriter, r *http.Request) {
 
 func accomplishmentsPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "accomplishments.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -203,9 +191,7 @@ func accomplishmentsPage(w http.ResponseWriter, r *http.Request) {
 
 func faqPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "faq.html")
-	// w.WriteHeader(http.StatusOK)
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -235,7 +221,6 @@ func faqPage(w http.ResponseWriter, r *http.Request) {
 
 func contactPage(w http.ResponseWriter, r *http.Request) {
 	layoutPage := filepath.Join("templates", "layout.html")
-	// templatePage := filepath.Join("templates", filepath.Clean(r.URL.Path))
 	templatePage := filepath.Join("templates", "contact.html")
 
 	// 404 if the template or dir doesn't exist
