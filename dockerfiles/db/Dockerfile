@@ -1,16 +1,12 @@
-# Makefile will handle compilation before proceeding with image creation. 
+# Makefile will handle compilation before proceeding with image creation.
 
 # mongoDB server - backend job will keep the DB updated
 FROM alpine:latest
 
 LABEL MAINTAINER="Adam Poniatowski <adaml.poniatowski@gmail.com>"
-# LABEL APP="mongodb"
-# LABEL APP_VERSION="4.2.7"
-# LABEL APP_REPOSITORY="https://pkgs.alpinelinux.org/package/edge/community/x86_64/mongodb"
 
-
-# Change the timezone to one you are thinking of running it
-ENV TIMEZONE Europe/Warsaw 
+# Change the timezone to one you are thinking of running it in
+ENV TIMEZONE Europe/Warsaw
 
 # Installation
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories

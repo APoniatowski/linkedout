@@ -1,20 +1,16 @@
-# Makefile will handle compilation before proceeding with image creation. 
+# Makefile will handle compilation before proceeding with image creation.
 
 # Backend job - will get data from linkedin periodically and place them in a mongodb server
-FROM golang:alpine
+FROM alpine:latest
 LABEL MAINTAINER="Adam Poniatowski <adaml.poniatowski@gmail.com>"
+LABEL MICROSERVICE="backend"
 
 RUN mkdir -p /app/
 COPY backend-microservice/ /app/
 
 WORKDIR /app
-RUN go build
 RUN chmod +x backend-microservice
+RUN rm *.go go.*
 
 EXPOSE 80
 CMD [ "/app/backend-microservice" ]
-
-# Once images are prepped, it will be passed to local registry in k8s and apply linkedout.yaml (deployment, service, etc)
-
-
-####################### Basic layout, will continue with this later #############################
