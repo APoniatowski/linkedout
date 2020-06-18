@@ -2,35 +2,30 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
-	http.HandleFunc("/", apiserver)
-	http.HandleFunc("/api/dbquery", dbquery)
-	http.ListenAndServe(envPort(), nil)
+	// JS and CSS handling/serving
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
+	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./templates/js"))))
 
-	// will implement error checking when starting up the listener
-	// if err != nil {
-	// 	fmt.Println("Error starting HTTP server...")
-	// }
-}
-
-func envPort() string {
-	port := os.Getenv("PORT")
-	if len(port) == 0 {
-		port = "8080"
+	// Page serving section
+	http.HandleFunc("/", welcomePage)
+	http.HandleFunc("/experience/", experiencePage)
+	http.HandleFunc("/certifications/", certificationPage)
+	http.HandleFunc("/skills/", skillsPage)
+	http.HandleFunc("/recommendations/", recommendationsPage)
+	http.HandleFunc("/accomplishments/", accomplishmentsPage)
+	http.HandleFunc("/projects/", projectsPage)
+	http.HandleFunc("/settings/", settingsPage)
+	http.HandleFunc("/faq/", faqPage)
+	http.HandleFunc("/contact/", contactPage)
+	err := http.ListenAndServe(envPort(), nil)
+	if err != nil {
+		fmt.Println(" Error starting HTTP server...")
+		fmt.Println("<=============================>")
+		log.Println(err.Error())
 	}
-	return ":" + port
-}
-
-func apiserver(w http.ResponseWriter, r http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Up and running")
-}
-
-func dbquery(w http.ResponseWriter, r http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Up and running")
 }

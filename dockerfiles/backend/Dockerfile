@@ -1,6 +1,7 @@
 # Makefile will handle compilation before proceeding with image creation.
 
-# Backend job - will get data from linkedin periodically and place them in a mongodb server
+# Backend job - an admin panel that will use the api to update the mongodb server
+############### as well as making api requests to github/gitlab for projects
 FROM alpine:latest
 LABEL MAINTAINER="Adam Poniatowski <adaml.poniatowski@gmail.com>"
 LABEL MICROSERVICE="backend"

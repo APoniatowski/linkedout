@@ -8,10 +8,8 @@ import (
 
 func main() {
 	// JS and CSS handling/serving
-	cssStatic := http.FileServer(http.Dir("./templates/css"))
-	jsStatic := http.FileServer(http.Dir("./templates/js"))
-	http.Handle("/css/", http.StripPrefix("/css/", cssStatic))
-	http.Handle("/js/", http.StripPrefix("/js/", jsStatic))
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
+	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./templates/js"))))
 
 	// Page serving section
 	http.HandleFunc("/", welcomePage)
