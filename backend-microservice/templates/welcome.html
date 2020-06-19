@@ -1,5 +1,16 @@
 {{define "title"}}Welcome{{end}}
 
-{{define "body"}}
-<h1>A short story about myself, etc. Pretty much whatever you want as your welcome message.</h1>
+{{define "adminpanel"}}
+    {{if .Success}}
+        {{define "body"}}
+            <h1>{{.Feedback}}</h1>
+        {{end}}
+    {{else}}
+        <h1>Editing Welcome Page</h1>
+        <form method="POST">
+            <label>Message:</label><br />
+            <textarea name="message"></textarea><br />
+            <input type="submit">
+        </form>
+    {{end}}
 {{end}}

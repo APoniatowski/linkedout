@@ -1,4 +1,7 @@
 /frontend-microservice/frontend-microservice
+/frontend-microservice/frontend-microservice.exe
 /backend-microservice/backend-microservice
+/backend-microservice/backend-microservice.exe
 /api-microservice/api-microservice
+/api-microservice/api-microservice.exe
 /*/go.sum

@@ -1,5 +1,21 @@
 {{define "title"}}Contact me{{end}}
 
-{{define "body"}}
-<h1>write down your contact details here.</h1>
+{{define "adminpanel"}}
+    {{if .Success}}
+        {{define "body"}}
+            <h1>{{.Feedback}}</h1>
+        {{end}}
+    {{else}}
+        <h1>Contact</h1>
+        <form method="POST">
+            <label>Email:</label>
+            <input type="text" name="email"><br />
+            <label>Linkedin Profile:</label>
+            <input type="text" name="URL"><br />
+            <label>Phone Number:</label>
+            <input type="text" name="phone number"></input><br />
+            <input type="submit">
+        </form>
+    {{end}}
 {{end}}
+

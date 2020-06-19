@@ -1,5 +1,18 @@
 {{define "title"}}FAQ{{end}}
 
-{{define "body"}}
-<h1>write down your FAQ in this template.</h1>
+{{define "adminpanel"}}
+    {{if .Success}}
+        {{define "body"}}
+            <h1>{{.Feedback}}</h1>
+        {{end}}
+    {{else}}
+        <h1>Editing FAQ Page</h1>
+        <form method="POST">
+            <label>Question:</label><br />
+            <textarea name="message"></textarea><br />
+            <label>Answer:</label><br />
+            <textarea name="message"></textarea><br />
+            <input type="submit">
+        </form>
+    {{end}}
 {{end}}
