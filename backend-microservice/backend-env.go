@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 )
 
@@ -18,13 +17,13 @@ func envPort() string {
 	return ":" + port
 }
 
-func envHostname() string {
-	hostname, err := os.Hostname()
-	if err != nil {
-		log.Println(err.Error())
-	} else {
-		return hostname
-	}
+// func envHostname() string {
+// 	hostname, err := os.Hostname()
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 	} else {
+// 		return hostname
+// 	}
 
-	return os.Getenv("HOSTNAME")
-}
+// 	return os.Getenv("HOSTNAME")
+// }

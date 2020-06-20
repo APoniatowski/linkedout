@@ -2,9 +2,14 @@
 
 {{define "adminpanel"}}
     {{if .Success}}
-        {{define "body"}}
-            <h1>{{.Feedback}}</h1>
-        {{end}}
+        <h1>{{.Feedback}}</h1>
+        <br />
+        <h1>Editing Welcome Page</h1>
+        <form method="POST">
+            <label>Message:</label><br />
+            <textarea name="message"></textarea><br />
+            <input type="submit">
+        </form>
     {{else}}
         <h1>Editing Welcome Page</h1>
         <form method="POST">

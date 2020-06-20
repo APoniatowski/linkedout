@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// JS and CSS handling / serving
+	// JS and CSS handling/serving
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./templates/js"))))
 
