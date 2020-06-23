@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -9,7 +10,9 @@ import (
 )
 
 type welcomeEdit struct {
-	Message string
+	Message  string
+	Success  bool
+	Feedback string
 }
 
 func welcomePage(w http.ResponseWriter, r *http.Request) {
@@ -28,29 +31,35 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-
+	// 500 if it fails to parse the files
 	templates, parseErr := template.ParseFiles(layoutPage, templatePage)
 	if parseErr != nil {
 		log.Println(parseErr.Error())
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
+
+	editMessage := welcomeEdit{
+		Message: r.FormValue("message"),
+	}
+	editMessage.Success = true
+	editMessage.Feedback = "feedback sent"
+	_ = editMessage // make POST to API server and wait for a response
+
+	// execute templates if no post was made
+	fmt.Println("method:", r.Method)
 	if r.Method != http.MethodPost {
-		err := templates.Execute(w, nil)
+		err := templates.ExecuteTemplate(w, "layout", nil)
+		// err := templates.ExecuteTemplate(os.Stdout, "layout", nil)
 		if err != nil {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
-		return
-	}
-	editMessage := welcomeEdit{
-		Message: r.FormValue("message"),
-	}
-
-	_ = editMessage // make POST to API server and wait for a response
-
-	tmplErr := templates.Execute(w, struct{ Success bool }{true})
-	if tmplErr != nil {
-		log.Println(tmplErr.Error())
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+	} else {
+		tmplErr := templates.ExecuteTemplate(w, "layout", editMessage)
+		// tmplErr := templates.ExecuteTemplate(os.Stdout, "layout", editMessage)
+		if tmplErr != nil {
+			log.Println(tmplErr.Error())
+			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		}
 	}
 }
