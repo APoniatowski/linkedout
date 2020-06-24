@@ -1,10 +1,10 @@
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-window.onscroll = function () {
-    stickyNavBar()
+window.onscroll = function() {
+    stickyNavBar();
 };
 
 function menuButtonFunction() {
-    var burger = document.getElementById("navBar");
+    let burger = document.getElementById("navBar");
     if (burger.className === "topnav") {
         burger.className += " responsive";
     } else {
@@ -13,11 +13,11 @@ function menuButtonFunction() {
 }
 
 function stickyNavBar() {
-    var navbar = document.getElementById("navBar");
-    var sticky = navbar.offsetTop;
+    let navbar = document.getElementById("navBar");
+    let sticky = navbar.offsetTop;
     if (window.pageYOffset >= sticky) {
         navbar.classList.add("sticky")
     } else {
         navbar.classList.remove("sticky");
-    }
-}
+    };
+};

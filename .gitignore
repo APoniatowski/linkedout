@@ -5,3 +5,5 @@
 /api-microservice/api-microservice
 /api-microservice/api-microservice.exe
 /*/go.sum
+.idea
+*/.idea

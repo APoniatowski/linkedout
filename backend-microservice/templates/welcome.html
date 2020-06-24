@@ -1,20 +1,16 @@
 {{define "title"}}Welcome{{end}}
 
+{{- /*gotype: backend-microservice.welcomeEdit*/ -}}
 {{define "adminpanel"}}
-{{if .Success }}
     <h1>Editing Welcome Page</h1>
+    <label>Message:</label>
     <form method="POST">
-        <label>Message:</label><br />
-        <textarea name="message"></textarea><br />
-        <input type="submit">
+        <label>
+            <textarea name="message"></textarea>
+        </label><br />
+    <input type="submit">
     </form>
-    <h2>{{ .Feedback }}</h2>
-    {{else}}
-        <h1>Editing Welcome Page</h1>
-        <form method="POST">
-            <label>Message:</label><br />
-            <textarea name="message"></textarea><br />
-            <input type="submit">
-        </form>
+    {{if .Success }}
+        <h2>{{ .Feedback }}</h2>
     {{end}}
 {{end}}

@@ -24,39 +24,31 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 	if notFoundErr != nil {
 		if os.IsNotExist(notFoundErr) {
 			http.NotFound(w, r)
-			return
 		}
 	}
 	if info.IsDir() {
 		http.NotFound(w, r)
-		return
 	}
 	// 500 if it fails to parse the files
-	templates, parseErr := template.ParseFiles(layoutPage, templatePage)
-	if parseErr != nil {
-		log.Println(parseErr.Error())
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
-	}
-
+	var templates = template.Must(template.ParseFiles(layoutPage, templatePage))
 	editMessage := welcomeEdit{
 		Message: r.FormValue("message"),
+		Success: true,
+		Feedback: "feedback sent",
 	}
-	editMessage.Success = true
-	editMessage.Feedback = "feedback sent"
+	// editMessage.Success = true
+	// editMessage.Feedback = "feedback sent"
 	_ = editMessage // make POST to API server and wait for a response
-
 	// execute templates if no post was made
 	fmt.Println("method:", r.Method)
 	if r.Method != http.MethodPost {
 		err := templates.ExecuteTemplate(w, "layout", nil)
-		// err := templates.ExecuteTemplate(os.Stdout, "layout", nil)
 		if err != nil {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
 	} else {
 		tmplErr := templates.ExecuteTemplate(w, "layout", editMessage)
-		// tmplErr := templates.ExecuteTemplate(os.Stdout, "layout", editMessage)
 		if tmplErr != nil {
 			log.Println(tmplErr.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
