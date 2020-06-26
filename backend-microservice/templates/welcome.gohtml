@@ -1,6 +1,5 @@
 {{define "title"}}Welcome{{end}}
 
-{{- /*gotype: backend-microservice.welcomeEdit*/ -}}
 {{define "adminpanel"}}
     <h1>Editing Welcome Page</h1>
     <label>Message:</label>
@@ -8,9 +7,6 @@
         <label>
             <textarea name="message"></textarea>
         </label><br />
-    <input type="submit">
+    <input type="submit" value="Submit">
     </form>
-    {{if .Success }}
-        <h2>{{ .Feedback }}</h2>
-    {{end}}
 {{end}}

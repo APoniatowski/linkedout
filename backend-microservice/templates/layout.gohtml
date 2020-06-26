@@ -22,9 +22,16 @@
     </a>
 </div>
 <body>
-    <div class="content">
+    <div>
         {{template "adminpanel"}}
     </div>
+        {{if .Success }}
+            <div>
+                <h2>
+                    {{ .Feedback }}
+                </h2>
+            </div>
+        {{end}}
 </body>
 <footer>Made with Go</footer>
 </html>

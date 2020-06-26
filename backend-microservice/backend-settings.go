@@ -9,8 +9,8 @@ import (
 )
 
 func settingsPage(w http.ResponseWriter, r *http.Request) {
-	layoutPage := filepath.Join("templates", "layout.html")
-	templatePage := filepath.Join("templates", "settings.html")
+	layoutPage := filepath.Join("templates", "layout.gohtml")
+	templatePage := filepath.Join("templates", "settings.gohtml")
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)

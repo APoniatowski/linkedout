@@ -16,8 +16,8 @@ type welcomeEdit struct {
 }
 
 func welcomePage(w http.ResponseWriter, r *http.Request) {
-	layoutPage := filepath.Join("templates", "layout.html")
-	templatePage := filepath.Join("templates", "welcome.html")
+	layoutPage := filepath.Join("templates", "layout.gohtml")
+	templatePage := filepath.Join("templates", "welcome.gohtml")
 
 	// 404 if the template or dir doesn't exist
 	info, notFoundErr := os.Stat(templatePage)
@@ -29,29 +29,41 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 	if info.IsDir() {
 		http.NotFound(w, r)
 	}
-	// 500 if it fails to parse the files
 	var templates = template.Must(template.ParseFiles(layoutPage, templatePage))
-	editMessage := welcomeEdit{
-		Message: r.FormValue("message"),
-		Success: true,
-		Feedback: "feedback sent",
+	var editMessage welcomeEdit
+	// Route check
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
 	}
-	// editMessage.Success = true
-	// editMessage.Feedback = "feedback sent"
-	_ = editMessage // make POST to API server and wait for a response
-	// execute templates if no post was made
 	fmt.Println("method:", r.Method)
-	if r.Method != http.MethodPost {
-		err := templates.ExecuteTemplate(w, "layout", nil)
-		if err != nil {
-			log.Println(err.Error())
+	// Switch case for GET and POST
+	switch r.Method {
+	case "GET":
+		tmplErr := templates.ExecuteTemplate(w, "layout", nil)
+		if tmplErr != nil {
+			log.Println(tmplErr.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
-	} else {
+	case "POST":
+		// Call ParseForm() to parse the raw query and update r.PostForm and r.Form.
+		if err := r.ParseForm(); err != nil {
+			log.Println(err.Error())
+			fmt.Fprintf(w, "ParseForm() err: %v", err)
+			return
+		}
+		editMessage = welcomeEdit{
+			Message: r.FormValue("message"),
+			Success: true,
+			Feedback: "feedback sent",
+		}
+		// do something with editMessage.Message etc. above code is just to test
 		tmplErr := templates.ExecuteTemplate(w, "layout", editMessage)
 		if tmplErr != nil {
 			log.Println(tmplErr.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
+	default:
+		fmt.Fprintf(w, "Only GET and POST methods are supported.")
 	}
 }
