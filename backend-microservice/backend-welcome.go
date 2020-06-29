@@ -11,7 +11,7 @@ import (
 
 type welcomeEdit struct {
 	Message  string
-	Success  bool
+	IsPOST  bool
 	Feedback string
 }
 
@@ -30,13 +30,12 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 	}
 	var templates = template.Must(template.ParseFiles(layoutPage, templatePage))
-	var editMessage welcomeEdit
+	var editMessage dataHandler
 	// Route check
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
-	fmt.Println("method:", r.Method)
 	// Switch case for GET and POST
 	switch r.Method {
 	case "GET":
@@ -52,18 +51,18 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
 		}
-		editMessage = welcomeEdit{
+		editMessage.welcomeAPICall = welcomeEdit{
 			Message: r.FormValue("message"),
-			Success: true,
-			Feedback: "feedback sent",
+			IsPOST: true,
 		}
+		editMessage.welcomeAPICall.Feedback = editMessage.apiPost(r)
 		// do something with editMessage.Message etc. above code is just to test
-		tmplErr := templates.ExecuteTemplate(w, "layout", editMessage)
+		tmplErr := templates.ExecuteTemplate(w, "layout", editMessage.welcomeAPICall)
 		if tmplErr != nil {
 			log.Println(tmplErr.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
 	default:
-		fmt.Fprintf(w, "Only GET and POST methods are supported.")
+		fmt.Fprintf(w, "Only valid methods are supported.")
 	}
 }

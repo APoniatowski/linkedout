@@ -12,7 +12,7 @@ import (
 // vars are placeholders for now. boilerplate code, until I finish them 1-by-1
 type contactEdit struct {
 	Message  string
-	Success  bool
+	IsPOST  bool
 	Feedback string
 }
 
@@ -31,13 +31,12 @@ func contactPage(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 	}
 	var templates = template.Must(template.ParseFiles(layoutPage, templatePage))
-	var editContact contactEdit
+	var editContact dataHandler
 	// Route check
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
-	fmt.Println("method:", r.Method)
 	// Switch case for GET and POST
 	switch r.Method {
 	case "GET":
@@ -53,13 +52,13 @@ func contactPage(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
 		}
-		editContact = contactEdit{
+		editContact.contactAPICall = contactEdit{
 			Message: r.FormValue("message"),
-			Success: true,
-			Feedback: "feedback sent",
+			IsPOST: true,
+			Feedback: editContact.apiPost(r),
 		}
 		// do something with editContact.Message etc. above code is just to test
-		tmplErr := templates.ExecuteTemplate(w, "layout", editContact)
+		tmplErr := templates.ExecuteTemplate(w, "layout", editContact.contactAPICall)
 		if tmplErr != nil {
 			log.Println(tmplErr.Error())
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
