@@ -9,7 +9,7 @@ import (
 	placeholder db query. this will send a soon to be defined request to the DB server.
 	mongoDB will be used, to avoid json marshalling and unmarshalling.
 */
-func dbquery(w http.ResponseWriter, r *http.Request) {
+func dbWelcome(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Up and running")
 }

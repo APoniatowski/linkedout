@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", dbquery)
+	http.HandleFunc("/welcome", dbWelcome)
 	err := http.ListenAndServe(envPort(), nil)
 	if err != nil {
 		fmt.Println(" Error starting HTTP server...")

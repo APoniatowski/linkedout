@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"time"
 )
 
 const (
@@ -17,6 +21,10 @@ const (
 	contact         = "/contact"
 )
 
+func logError(e error) {
+	log.Println(e.Error())
+}
+
 type dataHandler struct{
 	welcomeAPICall welcomeEdit
 	contactAPICall contactEdit
@@ -26,8 +34,33 @@ type dataHandler struct{
 func (dH *dataHandler)apiPost(r *http.Request) (feedback string) {
 	switch r.URL.Path {
 	case welcome:
-		// http.Post()
-		feedback = "POST made"
+		// convert data to byte
+		welcomePost := []byte(dH.welcomeAPICall.Message)
+
+		// send the converted request
+		request, postErr := http.NewRequest("POST", "http://linkedout-api/welcome", bytes.NewBuffer(welcomePost))
+		logError(postErr)
+		request.Header.Set("Content-type","")
+
+		// set a timeout period
+		timeout := 2 * time.Second
+		client := http.Client{
+			Timeout: timeout,
+		}
+		// handle the response
+		response, resErr := client.Do(request)
+		logError(resErr)
+		defer response.Body.Close()
+
+		// api will handle json.marshalling and will return json from api
+		// it will lessen the burden of marshalling on the frontend, and let the api handle marshalling
+
+		// read the response
+		body, bErr := ioutil.ReadAll(response.Body)
+		logError(bErr)
+
+		// return the feedback as string
+		feedback = string(body)
 		return
 	case experience:
 		// http.Post()
