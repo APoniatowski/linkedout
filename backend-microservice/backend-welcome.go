@@ -63,6 +63,6 @@ func welcomePage(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		}
 	default:
-		fmt.Fprintf(w, "Only valid methods are supported.")
+		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed)
 	}
 }
