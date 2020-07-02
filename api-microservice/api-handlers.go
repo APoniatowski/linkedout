@@ -4,17 +4,25 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"sync"
 )
 
+func newLinkedoutHandlers() *linkedoutHandlers {
+	return &linkedoutHandlers{
+		data: map[string]WelcomeJSON{},
+	}
+}
+
 type linkedoutHandlers struct {
+	sync.Mutex
 	welcomeHandlers WelcomeJSON
+	contactHandlers ContactJSON
 }
 
 func (h *linkedoutHandlers) get(w http.ResponseWriter, r *http.Request) {
-	
-	getMessage := WelcomeJSON{}
 	// TODO  receive request
 
+	h.Lock()
 	jsonBytes, marshalErr := json.Marshal(getMessage)
 	if marshalErr != nil {
 		log.Println(marshalErr.Error())
@@ -24,9 +32,9 @@ func (h *linkedoutHandlers) get(w http.ResponseWriter, r *http.Request) {
 			log.Println(errErr.Error())
 		}
 	}
-
 	// TODO respond to requester
 
+	h.Unlock()
 	w.WriteHeader(http.StatusOK)
 	_ , writeErr := w.Write(jsonBytes)
 	if writeErr != nil {

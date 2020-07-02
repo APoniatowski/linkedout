@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/welcome", Welcome)
+	linkedoutHandlers := newLinkedoutHandlers()
+	http.HandleFunc("/welcome", linkedoutHandlers.Welcome)
 	err := http.ListenAndServe(envPort(), nil)
 	if err != nil {
 		fmt.Println(" Error starting HTTP server...")

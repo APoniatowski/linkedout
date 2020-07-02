@@ -11,16 +11,18 @@ const (
 	DELETE = "DELETE"
 )
 
-func Welcome(w http.ResponseWriter, r *http.Request) {
+func (h *linkedoutHandlers) Welcome(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/welcome" {
 		http.NotFound(w, r)
 		return
 	}
 	switch r.Method {
 	case GET:
+		h.get(w , r)
 		// should check DB if anything exists, if it exists, send it
 	case POST:
-		// if something is posted, it overwrite the welcome entry. Wasted resources trying to update. overwriting is cheaper
+
+		// if something is posted, it will overwrite the welcome entry. Wasted resources trying to update. overwriting is cheaper
 	case PUT:
 		// send to POST. Overwrite is the cheaper option
 	case DELETE:
