@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
+
 )
 
 func main() {
+
 	linkedoutHandlers := newLinkedoutHandlers()
 	http.HandleFunc("/welcome", linkedoutHandlers.Welcome)
 	err := http.ListenAndServe(envPort(), nil)
