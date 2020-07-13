@@ -17,25 +17,29 @@ import (
 )
 
 const (
-	success = "SUCCESS"
-	error = "SUCCESS"
+	success = "success"
+	error = "error"
 )
 
 
 func (h *linkedoutHandlers) getMongoDB(col string) interface{} {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	timeout := 5*time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
+		if err = client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 		}
 	}()
@@ -48,17 +52,21 @@ func (h *linkedoutHandlers) getMongoDB(col string) interface{} {
 func (h *linkedoutHandlers) postMongoDB(col string) string {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	timeout := 5*time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
+		if err = client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 		}
 	}()
@@ -66,13 +74,38 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 	collection := client.Database("linkedout").Collection(col)
 	switch col {
 	case "welcome":
-		res, err := collection.InsertOne(context.TODO(), h.welcomeHandlers)
-		if err != nil {
+		welcomeCheck, checkErr := collection.EstimatedDocumentCount(ctx)
+		if checkErr != nil {
 			log.Fatal(err)
-			return error
 		}
-		id := res.InsertedID
-		return success
+		if welcomeCheck == 0 {
+			res, err := collection.InsertOne(ctx, h.welcomeHandlers)
+			if err != nil {
+				log.Fatal(err)
+				return error
+			}
+			id := res.InsertedID
+			return success + id.(string)
+		} else {
+			// convert struct/json to bson
+			filterMessage := collection.FindOne(ctx,"message")
+			updateMessage := bson.M{"$set": bson.M{"message":h.welcomeHandlers.Message}}
+			// Set FindOneAndUpdateOptions
+			upsert := true
+			after := options.After
+			opt := options.FindOneAndUpdateOptions{
+				ReturnDocument: &after,
+				Upsert:         &upsert,
+			}
+			// Find and update it
+			res := collection.FindOneAndUpdate(ctx,filterMessage,updateMessage,&opt)
+			if res.Err() != nil {
+				log.Fatal(res.Err())
+				return error
+			}
+
+			return success
+		}
 	default:
 		return error
 	}
