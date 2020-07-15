@@ -6,7 +6,7 @@ FROM alpine:latest
 LABEL MAINTAINER="Adam Poniatowski <adaml.poniatowski@gmail.com>"
 
 # Change the timezone to one you are thinking of running it in
-ENV TIMEZONE Europe/Warsaw
+# ENV TIMEZONE Europe/Warsaw
 
 # Installation
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories
@@ -21,7 +21,7 @@ RUN chown -R mongodb:mongodb /data
 
 EXPOSE 27017 28017
 
-ENTRYPOINT exec su-exec mongodb mongod --dbpath /data/db
+CMD [ "exec su-exec mongodb mongod --dbpath /data/db" ] 
 
 # Once images are prepped, it will be passed to local registry in k8s and apply linkedout.yaml (deployment, service, etc)
 
