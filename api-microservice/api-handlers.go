@@ -3,22 +3,22 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	//"fmt"
 	"log"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
+	//"go.mongodb.org/mongo-driver/mongo/readpref"
 	// go get go.mongodb.org/mongo-driver
 )
 
 const (
-	success = "success"
-	error = "error"
+	sendSuccess = "success"
+	sendError = "error"
 )
 
 
@@ -82,10 +82,10 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 			res, err := collection.InsertOne(ctx, h.welcomeHandlers)
 			if err != nil {
 				log.Fatal(err)
-				return error
+				return sendError
 			}
 			id := res.InsertedID
-			return success + id.(string)
+			return sendSuccess + id.(string)
 		} else {
 			// convert struct/json to bson
 			filterMessage := collection.FindOne(ctx,"message")
@@ -101,13 +101,13 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 			res := collection.FindOneAndUpdate(ctx,filterMessage,updateMessage,&opt)
 			if res.Err() != nil {
 				log.Fatal(res.Err())
-				return error
+				return sendError
 			}
 
-			return success
+			return sendSuccess
 		}
 	default:
-		return error
+		return sendSuccess
 	}
 
 
@@ -116,7 +116,8 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 
 func newLinkedoutHandlers() *linkedoutHandlers {
 	return &linkedoutHandlers{
-		data: map[string]WelcomeJSON{},
+		welcomeHandlers: WelcomeJSON{},
+		contactHandlers: ContactJSON{},
 	}
 }
 
