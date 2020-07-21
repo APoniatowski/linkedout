@@ -104,7 +104,7 @@ VOLUME /data/db /data/configdb
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-RUN apt-get remove -y gnupg dirmngr gnupg-curl; \
+RUN apt-get remove -y gnupg dirmngr; \
     apt-get autoremove -y; \
     apt-get clean
 
