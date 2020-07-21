@@ -78,18 +78,10 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 		if checkErr != nil {
 			log.Fatal(err)
 		}
-		if welcomeCheck == 0 {
-			res, err := collection.InsertOne(ctx, h.welcomeHandlers)
-			if err != nil {
-				log.Fatal(err)
-				return sendError
-			}
-			id := res.InsertedID
-			return sendSuccess + id.(string)
-		} else {
+		if welcomeCheck > 0 {
 			// convert struct/json to bson
-			filterMessage := collection.FindOne(ctx,"message")
-			updateMessage := bson.M{"$set": bson.M{"message":h.welcomeHandlers.Message}}
+			filterMessage := collection.FindOne(ctx, "message")
+			updateMessage := bson.M{"$set": bson.M{"message": h.welcomeHandlers.Message}}
 			// Set FindOneAndUpdateOptions
 			upsert := true
 			after := options.After
@@ -98,13 +90,20 @@ func (h *linkedoutHandlers) postMongoDB(col string) string {
 				Upsert:         &upsert,
 			}
 			// Find and update it
-			res := collection.FindOneAndUpdate(ctx,filterMessage,updateMessage,&opt)
+			res := collection.FindOneAndUpdate(ctx, filterMessage, updateMessage, &opt)
 			if res.Err() != nil {
 				log.Fatal(res.Err())
 				return sendError
 			}
-
 			return sendSuccess
+		} else {
+			res, err := collection.InsertOne(ctx, h.welcomeHandlers)
+			if err != nil {
+				log.Fatal(err)
+				return sendError
+			}
+			id := res.InsertedID
+			return sendSuccess + id.(string)
 		}
 	default:
 		return sendSuccess
