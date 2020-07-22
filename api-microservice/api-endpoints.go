@@ -21,8 +21,8 @@ func (h *linkedoutHandlers) Welcome(w http.ResponseWriter, r *http.Request) {
 		h.get(w , r)
 		// should check DB if anything exists, if it exists, send it
 	case POST:
-
-		// if something is posted, it will overwrite the welcome entry. Wasted resources trying to update. overwriting is cheaper
+		h.post(w, r)
+		// if something is posted, it will update it. overwriting is more expensive with the driver.
 	case PUT:
 		// send to POST. Overwrite is the cheaper option
 	case DELETE:
